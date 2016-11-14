@@ -16,9 +16,9 @@
 using namespace std;
 
 class Include{
-public:
-	vector<string> user_includes;
 private:
+	vector<string> user_includes;
+public:
 	/**
 	 @brief Makes a clear object
 	 */
@@ -38,11 +38,19 @@ private:
 	vector<string> getUserInclude();
 	
 	/**
+	 @brief Check if it is a C++ librarie
+	 @param looking Reads it and compare
+	 Check if it is a library from C++
+	 */
+	bool cppLibraries(string looking);
+	
+	/**
 	 @brief Reads all includes and saves them
-	 
+	 @param complete For example: #include <iostream>
+	 @return looking String with the header file
 	 Reads all includes and saves those which are written by the developer
 	 */
-	void read(string complete);
+	string read(string complete);
 };
 
 #endif /* include_reader_h */

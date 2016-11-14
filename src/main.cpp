@@ -10,16 +10,19 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "include_reader.h"
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
 	ifstream main_user;
+	ofstream makefile;
 	string main_name;
 	char folders;
 	bool in_folders = false;
 	vector<string> all_incl;
 	string str;
+	Include looking;
 	
 	cout << "\nPlease, write the name of your main cpp (if its name is main.cpp just write - ):" << endl;
 	cout << "Example: my_program.cpp" << endl;
@@ -42,12 +45,17 @@ int main(int argc, const char * argv[]) {
 	
 	if (!main_user){
 		cerr << "Error opening main file" << endl;
-		cerr << "Check you have writen the name right" << endl;
+		cerr << "Check you have writen the name in the right way" << endl;
 		cerr << "If the problem persists, check the folders that contains the file is named src/" << endl;
 	}
 	else{
-		while(getline(main_user, str)){
-			//Comprobar si no es una librería normal y añadirlo al vector all_incl
+		getline(main_user, str);
+		while(str[0] == '#'){
+			str = looking.read(str);
+			
+			if(str != ""){
+				/////////ORDENES DE COMPILACIÓN///////////////
+			}
 		}
 	}
 }
