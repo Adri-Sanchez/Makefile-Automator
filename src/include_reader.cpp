@@ -213,6 +213,9 @@ string Include::read(string complete){
 		
 		looking = complete.substr(pos_1+1, pos_2-1);
 	}
+	else{
+		looking = "";
+	}
 	
 	if(angle){
 		pos_1 = complete.find("\"");
@@ -220,8 +223,11 @@ string Include::read(string complete){
 		
 		looking = complete.substr(pos_1+1, pos_2-1);
 	}
+	else{
+		looking = "";
+	}
 	
-	if(!cppLibraries(looking)){
+	if(looking != "" && !cppLibraries(looking)){
 		user_includes.push_back(looking);
 	}
 	else{
