@@ -221,7 +221,7 @@ string Include::read(string complete){
 		looking = complete.substr(pos_1+1, pos_2-1);
 	}
 	
-	if(cppLibraries(looking)){
+	if(!cppLibraries(looking)){
 		user_includes.push_back(looking);
 	}
 	else{
