@@ -17,11 +17,10 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 	ifstream main_user;
 	ofstream makefile;
-	string main_name;
 	char folders;
 	bool in_folders = false;
 	vector<string> all_incl;
-	string str;
+	string str, main_name, folders_names[5], binarie;
 	Include looking;
 	
 	cout << "\nPlease, write the name of your main cpp (if its name is main.cpp just write - ):" << endl;
@@ -32,13 +31,30 @@ int main(int argc, const char * argv[]) {
 		main_name = "main.cpp";
 	}
 	
+	for(int i = 0; i < main_name.length(); i++){
+		if(main_name[i] != '.'){
+			binarie += main_name[i];
+		}
+	}
+	
 	cout << "Are your files in separated folders like 'src' or 'include'? Y/N";
 	cin >> folders;
 	
 	if(folders == 'Y' || folders == 'y'){
-		main_name = "src/" + main_name;
-		
 		in_folders = true;
+		
+		cout << "\nWrite the name of the folder that contains cpp files: ";
+		cin >> folders_names[0];
+		cout << "\nWrite the name of the folder that contains h (or hpp) files: ";
+		cin >> folders_names[1];
+		cout << "\nWrite the name of the folder that will contain object files: ";
+		cin >> folders_names[2];
+		cout << "\nWrite the name of the folder that will contain library files: ";
+		cin >> folders_names[3];
+		cout << "\nWrite the name of the folder that will contain executable files: ";
+		cin >> folders_names[4];
+		
+		main_name = folders_names[0] + "/" + main_name;
 	}
 	
 	main_user.open(main_name);
@@ -49,13 +65,37 @@ int main(int argc, const char * argv[]) {
 		cerr << "If the problem persists, check the folders that contains the file is named src/" << endl;
 	}
 	else{
-		getline(main_user, str);
-		while(str[0] == '#'){
+		
+		makefile << "CPPFLAGS = g++ -std=c++11 -c" << endl;
+		
+		if(in_folders){
+			makefile << "SRC = " << folders_names[0] << endl;
+			makefile << "INC = " << folders_names[1] << endl;
+			makefile << "OBJ = " << folders_names[2] << endl;
+			makefile << "LIB = " << folders_names[3] << endl;
+			makefile << "BIN = " << folders_names[4] << endl;
+		}
+		
+		makefile << "\n\n";
+		
+		do{
+			getline(main_user, str);
 			str = looking.read(str);
 			
-			if(str != ""){
-				/////////ORDENES DE COMPILACIÓN///////////////
+			if(str != "" && str[0] != '/'){
+				all_incl.push_back(str);
 			}
+			
+		}while (str[0] == '#');
+		
+		if(in_folders){
+			makefile << binarie << ": " << binarie << ".o ";
+			
+			for(int i = 0; i < all_incl.size(); i++){
+				////////////////////////////////////////////////////////
+			}
+			
+			makefile << "\tg++ -std=c++11 -o " << binarie << " ";
 		}
 	}
 }
