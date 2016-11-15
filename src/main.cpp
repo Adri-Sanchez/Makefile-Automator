@@ -20,7 +20,8 @@ int main(int argc, const char * argv[]) {
 	char folders;
 	bool in_folders = false;
 	vector<string> all_incl;
-	string str, main_name, folders_names[5], binarie;
+	vector<string> incl_no_h;
+	string str, main_name, folders_names[5], binary;
 	Include looking;
 	
 	cout << "\nPlease, write the name of your main cpp (if its name is main.cpp just write - ):" << endl;
@@ -33,7 +34,7 @@ int main(int argc, const char * argv[]) {
 	
 	for(int i = 0; i < main_name.length(); i++){
 		if(main_name[i] != '.'){
-			binarie += main_name[i];
+			binary += main_name[i];
 		}
 	}
 	
@@ -51,7 +52,7 @@ int main(int argc, const char * argv[]) {
 		cin >> folders_names[2];
 		cout << "\nWrite the name of the folder that will contain library files: ";
 		cin >> folders_names[3];
-		cout << "\nWrite the name of the folder that will contain executable files: ";
+		cout << "\nWrite the name of the folder that will contain binary files: ";
 		cin >> folders_names[4];
 		
 		main_name = folders_names[0] + "/" + main_name;
@@ -88,14 +89,35 @@ int main(int argc, const char * argv[]) {
 			
 		}while (str[0] == '#');
 		
-		if(in_folders){
-			makefile << binarie << ": " << binarie << ".o ";
+		for(int i = 0; i < all_incl.size(); i++){
+			string aux;
 			
-			for(int i = 0; i < all_incl.size(); i++){
-				////////////////////////////////////////////////////////
+			for(int j = 0; j < all_incl[i].length(); j++){
+				if(all_incl[i][j] != '.' && all_incl[i][j+1] != 'h' &&
+				   (j+2) < all_incl[i].length()){		//i = element in vector, j = character in this element
+					aux += all_incl[i][j];
+				}
 			}
 			
-			makefile << "\tg++ -std=c++11 -o " << binarie << " ";
+			incl_no_h.push_back(aux);
+		}
+		
+		if(in_folders){
+			makefile << "\n## Binary file ##" << endl;
+			makefile << "$(BIN)/" << binary << ": $(OBJ)/" << binary << ".o $(LIB)/libautomator.a" << endl;
+			makefile << "\tg++ -std=c++11 -o $(BIN)/" << binary << "$(OBJ)/" << binary << " -I" << folders_names[1] << "/ -lautomator" << endl;
+			
+			makefile << "\n## Object files ##" << endl;
+			makefile << "$(OBJ)/" << binary << ".o: $(SRC)/" << main_name << endl;
+			makefile << "\t$(CPPFLAGS) $(SRC)/" << main_name << " -o $(OBJ)/" << binary << ".o -I" << folders_names[1] << "/" << endl;
+			
+			for(int i = 0; i < all_incl.size(); i++){
+				makefile << "$(OBJ)/" << incl_no_h[i] << ".o: $(SRC)/" << incl_no_h[i] << ".cpp" << endl;
+				makefile << "\t$(CPPFLAGS) $(SRC)/" << incl_no_h[i] << " -o $(OBJ)/" << incl_no_h[i] << ".o -I" << folders_names[1] << "/" << endl;
+			}
+			
+			makefile << "\n## Library ##" << endl;
+			////////////////////////////////////////////////////////
 		}
 	}
 }

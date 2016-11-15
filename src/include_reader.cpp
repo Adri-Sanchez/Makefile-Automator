@@ -218,8 +218,8 @@ string Include::read(string complete){
 	}
 	
 	if(angle){
-		pos_1 = complete.find("\"");
-		pos_2 = complete.find("\"", pos_1+1);
+		pos_1 = complete.find("<");
+		pos_2 = complete.find(">", pos_1+1);
 		
 		looking = complete.substr(pos_1+1, pos_2-1);
 	}
