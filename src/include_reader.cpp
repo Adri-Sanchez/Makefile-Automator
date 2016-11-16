@@ -15,8 +15,8 @@ Include::Include(){
 	user_includes.clear();
 }
 
-string Include::getUserInclude(int pos){
-	string to_return;
+string Include::getUserInclude(unsigned int pos){
+	string to_return = "";
 	
 	if(pos < user_includes.size()){
 		to_return = user_includes[pos];
@@ -25,11 +25,11 @@ string Include::getUserInclude(int pos){
 	return to_return;
 }
 
-vector<string> Include::getUserInclude(){
+vector<string> Include::getUserInclude() const{
 	return user_includes;
 }
 
-bool Include::cppLibraries(string looking){
+bool Include::cppLibraries(const string &looking) const{
 	bool cpplib = false;
 	
 	if(looking == "cassert" || looking == "assert.h")
@@ -187,7 +187,7 @@ bool Include::cppLibraries(string looking){
 	return cpplib;
 }
 
-string Include::read(string complete){
+string Include::read(const string &complete){
 	size_t pos_1, pos_2;
 	bool angle, quotation;
 	string looking;
