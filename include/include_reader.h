@@ -29,20 +29,20 @@ public:
 	 @param pos Position in vector
 	 @return Concrete include
 	 */
-	string getUserInclude(int pos);
+	string getUserInclude(unsigned int pos) const;
 	
 	/**
 	 @brief Returns the entire vector
 	 @return The entire vector
 	 */
-	vector<string> getUserInclude();
+	vector<string> getUserInclude() const;
 	
 	/**
 	 @brief Check if it is a C++ librarie
 	 @param looking Reads it and compare
 	 Check if it is a library from C++
 	 */
-	bool cppLibraries(string looking);
+	bool cppLibraries(const string &looking) const;
 	
 	/**
 	 @brief Reads all includes and saves them
@@ -50,7 +50,7 @@ public:
 	 @return looking String with the header file
 	 Reads all includes and saves those which are written by the developer
 	 */
-	string read(string complete);
+	string read(const string &complete);
 };
 
 #endif /* include_reader_h */
